@@ -1,9 +1,12 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yeaseul_t_infinity_assignment/count.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => Counts()),
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,13 +15,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
+      create: (context) => Counts(),
       child: MaterialApp(
-        title: 'Namer App',
+        title: 'toy_mobile_app',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: Color.fromARGB(255, 83, 133, 198)),
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 189, 24, 24)),
         ),
         home: MyHomePage(),
       ),
@@ -26,41 +29,24 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-  void getNext() {
-    current = WordPair.random();
-    notifyListeners();
-  }
-
-  var favorites = <WordPair>[];
-
-  void toggleFavorite() {
-    if (favorites.contains(current)) {
-      favorites.remove(current);
-    } else {
-      favorites.add(current);
-    }
-    notifyListeners();
-  }
-}
-
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = GeneratorPage();
+        page = ScreenClickCount();
         break;
       case 1:
-        page = FavoritesPage();
+        page = ScreenClickCount();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -69,18 +55,32 @@ class _MyHomePageState extends State<MyHomePage> {
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
         body: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SafeArea(
               child: NavigationRail(
                 extended: constraints.maxWidth >= 600,
                 destinations: [
                   NavigationRailDestination(
-                    icon: Icon(Icons.home),
-                    label: Text('Home'),
+                    icon: Padding(
+                      padding: EdgeInsets.all(8.0), // 원하는 padding 값으로 변경
+                      child: Icon(Icons.ads_click),
+                    ),
+                    label: Padding(
+                      padding: EdgeInsets.all(8.0), // 원하는 padding 값으로 변경
+                      child: Text('Screen Click Count'),
+                    ),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(Icons.favorite),
-                    label: Text('Favorites'),
+                    icon: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Icon(Icons.schedule),
+                    ),
+                    label: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text('Clock'),
+                    ),
                   ),
                 ],
                 selectedIndex: selectedIndex,
@@ -104,45 +104,30 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class GeneratorPage extends StatelessWidget {
+class ScreenClickCount extends StatefulWidget {
+  const ScreenClickCount({super.key});
+
+  @override
+  State<ScreenClickCount> createState() => _ScreenClickCountState();
+}
+
+class _ScreenClickCountState extends State<ScreenClickCount> {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var pair = appState.current;
-
-    IconData icon;
-    if (appState.favorites.contains(pair)) {
-      icon = Icons.favorite;
-    } else {
-      icon = Icons.favorite_border;
-    }
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BigCard(pair: pair),
-          SizedBox(height: 10),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  appState.toggleFavorite();
-                },
-                icon: Icon(icon),
-                label: Text('Like'),
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getNext();
-                },
-                child: Text('Next'),
-              ),
-            ],
+    return Container(
+      color: Theme.of(context).colorScheme.primaryContainer,
+      width: double.infinity, // 추가
+      height: double.infinity,
+      child: InkWell(
+        onTap: () {
+          context.read<Counts>().increment();
+        },
+        child: Center(
+          child: Text(
+            'Screen Click Count: ${context.watch<Counts>().count}',
+            style: Theme.of(context).textTheme.displayMedium,
           ),
-        ],
+        ),
       ),
     );
   }
@@ -168,34 +153,6 @@ class BigCard extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Text(pair.asLowerCase, style: style),
       ),
-    );
-  }
-}
-
-class FavoritesPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
-    if (appState.favorites.isEmpty) {
-      return Center(
-        child: Text('No favorites yet'),
-      );
-    }
-
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text('You have '
-              '${appState.favorites.length} favorites:'),
-        ),
-        for (var pair in appState.favorites)
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text(pair.asLowerCase),
-          ),
-      ],
     );
   }
 }
