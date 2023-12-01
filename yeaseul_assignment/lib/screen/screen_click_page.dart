@@ -23,28 +23,27 @@ class _ScreenClickCountState extends State<ScreenClickCount> {
           context.read<Counts>().increment();
         },
         child: Center(
-          child: Wrap(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  "화면을 클릭하세요",
+                  style: AppStyles.titleTextStyle,
+                ),
+              ),
               Container(
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 255, 255, 255),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        '추가할 텍스트',
-                        style: AppStyles.titleTextStyle,
-                      ),
-                      Text(
-                        '화면 클릿 횟수: ${context.watch<Counts>().count}',
-                        style: AppStyles.titleTextStyle,
-                      ),
-                    ],
-                  ),
-                ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '화면 클릭 횟수: ${context.watch<Counts>().count}',
+                      style: AppStyles.titleTextStyle,
+                    )),
               ),
             ],
           ),
