@@ -1,11 +1,7 @@
-// ignore_for_file: unused_import
-
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yeaseul_t_infinity_assignment/component/navigation_destination.dart';
 import 'package:yeaseul_t_infinity_assignment/screen/clock_page.dart';
-import 'package:yeaseul_t_infinity_assignment/styles/app_style.dart';
 import 'package:yeaseul_t_infinity_assignment/utils/count.dart';
 import 'package:yeaseul_t_infinity_assignment/screen/screen_click_page.dart';
 
