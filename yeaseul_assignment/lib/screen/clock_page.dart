@@ -10,41 +10,32 @@ class ClockPage extends StatefulWidget {
 }
 
 class _ClockPageState extends State<ClockPage> {
-  var seklectClockNum = 0;
+  var seklectClockCountry = 'Asia/Seoul';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 255, 226, 226),
-        appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 255, 199, 199),
-          title: Text('korean clock & American clock',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              )),
-          centerTitle: true,
-        ),
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                countryChoseButton(0, '한국 시간', () {
+                countryChoseButton(0, 'korea', () {
                   setState(() {
-                    seklectClockNum = 0;
+                    seklectClockCountry = 'Asia/Seoul';
                   });
                 }),
-                countryChoseButton(1, '미국 시간', () {
+                countryChoseButton(1, 'America', () {
                   setState(() {
-                    seklectClockNum = 1;
+                    seklectClockCountry = 'America/New_York';
                   });
                 }),
               ],
             ),
-            Expanded(child: CountryClock(clockWidgetIndex: seklectClockNum)),
+            Expanded(
+                child: CountryClock(seklectClockCountry: seklectClockCountry)),
           ],
         ));
   }

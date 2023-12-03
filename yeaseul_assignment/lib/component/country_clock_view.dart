@@ -7,8 +7,8 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class CountryClock extends StatefulWidget {
-  final int clockWidgetIndex;
-  const CountryClock({Key? key, required this.clockWidgetIndex})
+  final String seklectClockCountry;
+  const CountryClock({Key? key, required this.seklectClockCountry})
       : super(key: key);
 
   @override
@@ -29,16 +29,10 @@ class _CountryClockState extends State<CountryClock> {
   }
 
   void _getTime() {
-    tz.TZDateTime now;
-    if (widget.clockWidgetIndex == 0) {
-      now = tz.TZDateTime.now(tz.getLocation('Asia/Seoul'));
-    } else if (widget.clockWidgetIndex == 1) {
-      now = tz.TZDateTime.now(tz.getLocation('America/New_York'));
-    } else {
-      now = tz.TZDateTime.now(tz.getLocation('Asia/Seoul'));
-    }
     setState(() {
-      _currentTime = now;
+      _currentTime =
+          tz.TZDateTime.now(tz.getLocation(widget.seklectClockCountry));
+      ;
       _formattedTime = DateFormat('HH:mm:ss').format(_currentTime);
     });
   }
@@ -51,24 +45,22 @@ class _CountryClockState extends State<CountryClock> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: 300,
-        height: 100,
-        margin: EdgeInsets.only(top: 20.0),
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 255, 255, 255),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Text(
-              _formattedTime,
-              style: TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-              ),
+    return Container(
+      margin: EdgeInsets.all(20.0),
+      height: 300,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 255, 255, 255),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Center(
+          child: Text(
+            _formattedTime,
+            style: TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
           ),
         ),

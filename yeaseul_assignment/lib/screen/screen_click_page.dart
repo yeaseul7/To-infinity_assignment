@@ -16,9 +16,6 @@ class _ScreenClickCountState extends State<ScreenClickCount> {
     return Material(
       color: Theme.of(context).colorScheme.primaryContainer,
       child: InkWell(
-        splashColor: Color.fromARGB(255, 255, 132, 123),
-        hoverColor: Theme.of(context).colorScheme.primaryContainer,
-        highlightColor: const Color.fromARGB(255, 255, 134, 126),
         onTap: () {
           context.read<Counts>().increment();
         },
@@ -28,9 +25,12 @@ class _ScreenClickCountState extends State<ScreenClickCount> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  "화면을 클릭하세요",
-                  style: AppStyles.titleTextStyle,
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 10.0),
+                  child: Text(
+                    "화면을 클릭하세요",
+                    style: AppStyles.titleTextStyle,
+                  ),
                 ),
               ),
               Container(
@@ -40,10 +40,12 @@ class _ScreenClickCountState extends State<ScreenClickCount> {
                 ),
                 child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '화면 클릭 횟수: ${context.watch<Counts>().count}',
-                      style: AppStyles.titleTextStyle,
-                    )),
+                    child: Text('화면 클릭 횟수: ${context.watch<Counts>().count}',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ))),
               ),
             ],
           ),

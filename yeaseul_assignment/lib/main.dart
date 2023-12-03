@@ -3,6 +3,9 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yeaseul_t_infinity_assignment/component/navigation_destination.dart';
+import 'package:yeaseul_t_infinity_assignment/screen/clock_page.dart';
+import 'package:yeaseul_t_infinity_assignment/styles/app_style.dart';
 import 'package:yeaseul_t_infinity_assignment/utils/count.dart';
 import 'package:yeaseul_t_infinity_assignment/screen/screen_click_page.dart';
 
@@ -23,9 +26,10 @@ class MyApp extends StatelessWidget {
         title: 'toy_mobile_app',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 189, 24, 24)),
-        ),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Color.fromARGB(255, 142, 144, 255),
+              brightness: Brightness.values[0]),
+        ), // MyTheme 클래스를 사용하여 테마를 설정합니다.
         home: MyHomePage(),
       ),
     );
@@ -49,42 +53,35 @@ class _MyHomePageState extends State<MyHomePage> {
         page = ScreenClickCount();
         break;
       case 1:
-        page = ScreenClickCount();
+        page = ClockPage();
         break;
       default:
-        throw UnimplementedError('no widget for $selectedIndex');
+        throw UnimplementedError('$selectedIndex 에는 위젯이 존재하지 않습니다.');
     }
 
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 36, 0, 108),
+          title: Text("toy_mobile_app",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              )),
+          centerTitle: true,
+        ),
         body: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SafeArea(
+            Expanded(
+              flex: 1,
               child: NavigationRail(
+                backgroundColor: Color.fromARGB(255, 197, 201, 255),
                 extended: constraints.maxWidth >= 600,
                 destinations: [
-                  NavigationRailDestination(
-                    icon: Padding(
-                      padding: EdgeInsets.all(8.0), // 원하는 padding 값으로 변경
-                      child: Icon(Icons.ads_click),
-                    ),
-                    label: Padding(
-                      padding: EdgeInsets.all(8.0), // 원하는 padding 값으로 변경
-                      child: Text('Screen Click Count'),
-                    ),
-                  ),
-                  NavigationRailDestination(
-                    icon: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Icon(Icons.schedule),
-                    ),
-                    label: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text('Clock'),
-                    ),
-                  ),
+                  createDestination(Icons.ads_click, 'Screen Click Count', 8.0),
+                  createDestination(Icons.schedule, 'Clock', 5.0),
                 ],
                 selectedIndex: selectedIndex,
                 onDestinationSelected: (value) {
@@ -95,8 +92,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Expanded(
+              flex: 3,
               child: Container(
-                color: Theme.of(context).colorScheme.primaryContainer,
                 child: page,
               ),
             ),
@@ -104,58 +101,5 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     });
-  }
-}
-
-class ScreenClickCount extends StatefulWidget {
-  const ScreenClickCount({super.key});
-
-  @override
-  State<ScreenClickCount> createState() => _ScreenClickCountState();
-}
-
-class _ScreenClickCountState extends State<ScreenClickCount> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.primaryContainer,
-      width: double.infinity, // 추가
-      height: double.infinity,
-      child: InkWell(
-        onTap: () {
-          context.read<Counts>().increment();
-        },
-        child: Center(
-          child: Text(
-            'Screen Click Count: ${context.watch<Counts>().count}',
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class BigCard extends StatelessWidget {
-  const BigCard({
-    super.key,
-    required this.pair,
-  });
-
-  final WordPair pair;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onPrimary,
-    );
-    return Card(
-      color: theme.colorScheme.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(pair.asLowerCase, style: style),
-      ),
-    );
   }
 }
