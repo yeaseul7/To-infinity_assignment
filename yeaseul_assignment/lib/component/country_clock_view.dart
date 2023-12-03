@@ -7,8 +7,8 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class CountryClock extends StatefulWidget {
-  final String seklectClockCountry;
-  const CountryClock({Key? key, required this.seklectClockCountry})
+  final String selectClockCountry;
+  const CountryClock({Key? key, required this.selectClockCountry})
       : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class _CountryClockState extends State<CountryClock> {
   void _getTime() {
     setState(() {
       _currentTime =
-          tz.TZDateTime.now(tz.getLocation(widget.seklectClockCountry));
+          tz.TZDateTime.now(tz.getLocation(widget.selectClockCountry));
       ;
       _formattedTime = DateFormat('HH:mm:ss').format(_currentTime);
     });
@@ -55,13 +55,26 @@ class _CountryClockState extends State<CountryClock> {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Center(
-          child: Text(
-            _formattedTime,
-            style: TextStyle(
-              fontSize: 50,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                widget.selectClockCountry.split('/')[1],
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                _formattedTime,
+                style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
           ),
         ),
       ),

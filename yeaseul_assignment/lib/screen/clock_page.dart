@@ -10,7 +10,7 @@ class ClockPage extends StatefulWidget {
 }
 
 class _ClockPageState extends State<ClockPage> {
-  var seklectClockCountry = 'Asia/Seoul';
+  var selectClockCountry = 'Asia/Seoul';
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +22,20 @@ class _ClockPageState extends State<ClockPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                countryChoseButton(0, 'korea', () {
+                countryChoseButton(0, 'Seoul', () {
                   setState(() {
-                    seklectClockCountry = 'Asia/Seoul';
+                    selectClockCountry = 'Asia/Seoul';
                   });
                 }),
-                countryChoseButton(1, 'America', () {
+                countryChoseButton(1, 'New_York', () {
                   setState(() {
-                    seklectClockCountry = 'America/New_York';
+                    selectClockCountry = 'America/New_York';
                   });
                 }),
               ],
             ),
             Expanded(
-                child: CountryClock(seklectClockCountry: seklectClockCountry)),
+                child: CountryClock(selectClockCountry: selectClockCountry)),
           ],
         ));
   }
