@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yeaseul_t_infinity_assignment/count.dart';
+import 'package:yeaseul_t_infinity_assignment/utils/count.dart';
 import 'package:yeaseul_t_infinity_assignment/styles/app_style.dart';
 
 class ScreenClickCount extends StatefulWidget {

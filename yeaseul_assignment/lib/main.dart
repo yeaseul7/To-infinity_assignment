@@ -1,7 +1,9 @@
+// ignore_for_file: unused_import
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yeaseul_t_infinity_assignment/count.dart';
+import 'package:yeaseul_t_infinity_assignment/utils/count.dart';
 import 'package:yeaseul_t_infinity_assignment/screen/screen_click_page.dart';
 
 void main() {
@@ -102,6 +104,35 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     });
+  }
+}
+
+class ScreenClickCount extends StatefulWidget {
+  const ScreenClickCount({super.key});
+
+  @override
+  State<ScreenClickCount> createState() => _ScreenClickCountState();
+}
+
+class _ScreenClickCountState extends State<ScreenClickCount> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).colorScheme.primaryContainer,
+      width: double.infinity, // 추가
+      height: double.infinity,
+      child: InkWell(
+        onTap: () {
+          context.read<Counts>().increment();
+        },
+        child: Center(
+          child: Text(
+            'Screen Click Count: ${context.watch<Counts>().count}',
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+        ),
+      ),
+    );
   }
 }
 
